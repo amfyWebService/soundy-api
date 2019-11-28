@@ -3,8 +3,8 @@
 ## 1. Install all package
 
 ```bash
-$ npm install install
-```
+$ npm install
+``` 
 
 
 ## 2. Install the swagger module
