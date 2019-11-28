@@ -9,15 +9,17 @@
   "main": "app.js",
   "dependencies": {
     "express": "^4.12.3",
+    "swagger": "^0.7.5",
     "swagger-express-mw": "^0.7.0"
   },
   "devDependencies": {
     "should": "^7.1.0",
-    "supertest": "^1.0.0"
+    "supertest": "^1.0.0",
+    "swagger-editor": "^3.7.1"
   },
   "scripts": {
     "start": "node app.js",
     "test": "swagger project test",
-    "ui" : "swagger project edit"
+    "ui": "swagger project edit"
   }
 }
