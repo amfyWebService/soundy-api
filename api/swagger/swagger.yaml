@@ -1,0 +1,457 @@
+swagger: "2.0"
+info:
+  description: "This is a complete description of soundy Api"
+  version: "1.0.0"
+  title: "Swagger Tracksstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:10010"
+basePath: "/v2"
+tags:
+- name: "tracks"
+  description: "Everything about your tracks"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "albums"
+  description: "Access to albums"
+- name: "users"
+  description: "Operations about user"
+  externalDocs:
+    description: "Find out more about our store"
+    url: "http://swagger.io"
+schemes:
+- "https"
+- "http"
+paths:
+  /tracks:
+    post:
+      tags:
+      - "tracks"
+      summary: "Add a new track to the store"
+      description: ""
+      operationId: "addTrack"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Track object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Tracks"
+      responses:
+        201:
+          description: "Created sucessfully"
+        405:
+          description: "Invalid input"
+      security:
+      - auth:
+        - "write:Tracks"
+        - "read:Tracks"
+  /tracks/{trackId}:
+    get:
+      tags:
+      - "tracks"
+      summary: "Find Tracks by ID"
+      description: "Returns a single Tracks"
+      operationId: "getTracksById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "trackId"
+        in: "path"
+        description: "ID of Tracks to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Tracks"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Tracks not found"
+      security:
+      - auth:
+        - "read:Tracks"
+    put:
+      tags:
+      - "tracks"
+      summary: "Updates a Tracks in the store with form data"
+      description: ""
+      operationId: "updateTracksWithForm"
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "trackId"
+        in: "path"
+        description: "ID of Tracks that needs to be updated"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "name"
+        in: "formData"
+        description: "Updated name of the Tracks"
+        required: false
+        type: "string"
+      - name: "status"
+        in: "formData"
+        description: "Updated status of the Tracks"
+        required: false
+        type: "string"
+      responses:
+        405:
+          description: "Invalid input"
+      security:
+      - auth:
+        - "write:Tracks"
+        - "read:Tracks"
+    delete:
+      tags:
+      - "tracks"
+      summary: "Deletes a Tracks"
+      description: ""
+      operationId: "deleteTracks"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "trackId"
+        in: "path"
+        description: "Tracks id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Tracks not found"
+      security:
+      - auth:
+        - "write:Tracks"
+        - "read:Tracks"
+  /albums/{albumId}:
+    get:
+      tags:
+      - "albums"
+      summary: "get an album by id"
+      description: ""
+      operationId: "getAlbums"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "albumId"
+        in: "path"
+        description: "ID of album to get"
+        required: true
+        type: "string"
+        format: "uuid"
+      responses:
+        200:
+          description: "operation sucessful"
+          schema:
+            $ref: "#/definitions/Albums"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Album not found"
+      security:
+      - auth:
+        - "read:Albums"
+        
+  /albums/{albumId}/uploadCover:
+    post:
+      tags:
+      - "albums"
+      summary: "uploads an image"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "albumId"
+        in: "path"
+        description: "ID of album to update"
+        required: true
+        type: "string"
+        format: "uuid"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        200:
+          description: "successful operation"
+      security:
+      - auth:
+        - "write:Tracks"
+        - "read:Tracks"
+  /users:
+    post:
+      tags:
+      - "users"
+      summary: "Create user"
+      description: "This can only be done by the logged in user."
+      operationId: "createUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "successful operation"
+  /users/login:
+    post:
+      tags:
+      - "users"
+      summary: "Logs user into the system"
+      description: ""
+      operationId: "loginUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        description: "body of the request"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            username:
+              type: "string"
+            password:
+              type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            properties:
+              token:
+                type: "string"
+          headers:
+            X-Rate-Limit:
+              type: "integer"
+              format: "int32"
+              description: "calls per hour allowed by the user"
+            X-Expires-After:
+              type: "string"
+              format: "date-time"
+              description: "date in UTC when token expires"
+        400:
+          description: "Invalid username/password supplied"
+  /users/logout:
+    get:
+      tags:
+      - "users"
+      summary: "Logs out current logged in user session"
+      description: ""
+      operationId: "logoutUser"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /users/:
+    get:
+      tags:
+      - "users"
+      summary: "Get user by user name"
+      description: ""
+      operationId: "getUserByName"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "query"
+        description: "The name that needs to be fetched. Use user1 for testing. "
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+    put:
+      tags:
+      - "users"
+      summary: "Updated user"
+      description: "This can only be done by the logged in user."
+      operationId: "updateUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "query"
+        description: "id that need to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Updated user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        400:
+          description: "Invalid user supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+      - "users"
+      summary: "Delete user"
+      description: "This can only be done by the logged in user."
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "userId"
+        in: "query"
+        description: "The name that needs to be deleted"
+        required: true
+        type: "string"
+      responses:
+        400:
+          description: "Invalid username supplied"
+        404:
+          description: "User not found"
+securityDefinitions:
+  auth:
+    type: "oauth2"
+    authorizationUrl: "http://Tracksstore.swagger.io/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write:Tracks: "modify Tracks in your account"
+      read:Tracks: "read your Tracks"
+      write:Albums: "modify Albums in your account"
+      read:Albums: "read your Albums"
+      write:Users: "modify Users in your account"
+      read:Users: "read your Users"
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "uuid"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      description:
+        type: "string"
+      birthday:
+        type: "string"
+        format: "date"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
+  Albums:
+    type: "object"
+    required:
+      - "name"
+      - "user_id"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      name:
+        type: "string"
+      user_id:
+        type: "string"
+        format: "uuid"
+      trackList:
+        type: "array"
+        items:
+          $ref: "#/definitions/Tracks"
+      coverPath:
+        type: "string"
+        format: "path"
+        example: "https://serveur.com/maCover.jpeg"
+      musicType:
+        type: "array"
+        items:
+          type: "string"
+      created_at:
+        type: "string"
+        format: "date"
+      updated_at:
+        type: "string"
+        format: "date"
+    xml:
+      name: "Tag"
+  Tracks:
+    type: "object"
+    required:
+    - "id"
+    - "title"
+    - "duration"
+    - "user_id"
+    - "path"
+    properties:
+      id:
+        type: "string"
+        format: "uuid"
+      title:
+        type: "string"
+        example: "Mon son"
+      duration:
+        type: "integer"
+        format: "int64"
+        example: 180000
+      user_id:
+        type: "string"
+        format: "uuid"
+      path:
+        type: "string"
+        format: "path"
+        example: "https://server.com/data/monson.mp3"
