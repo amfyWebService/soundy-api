@@ -20,5 +20,5 @@ $ npm install -g swagger
 The interactive, browser-based [Swagger Editor](http://editor.swagger.io/) is built in. It provides Swagger 2.0 validation and endpoint routing, generates docs on the fly, and consumes easy-to-read YAML.
 
 ```bash
-$ swagger project edit
+$ npm run ui
 ```
