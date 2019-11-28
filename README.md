@@ -1,6 +1,13 @@
 # Soundy api
 
-## 1. Install the swagger module
+## 1. Install all package
+
+```bash
+$ npm install install
+```
+
+
+## 2. Install the swagger module
 
 Install using npm. For complete instructions, see the [install](./docs/install.md) page.
 
@@ -8,7 +15,7 @@ Install using npm. For complete instructions, see the [install](./docs/install.m
 $ npm install -g swagger
 ```
 
-## 2. Design your API in the Swagger Editor
+## 3. Design your API in the Swagger Editor
 
 The interactive, browser-based [Swagger Editor](http://editor.swagger.io/) is built in. It provides Swagger 2.0 validation and endpoint routing, generates docs on the fly, and consumes easy-to-read YAML.
 
