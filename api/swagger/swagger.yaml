@@ -138,7 +138,7 @@ paths:
         description: "Track object that needs to be added to the store"
         required: true
         schema:
-          $ref: "#/definitions/Tracks"
+          $ref: "#/definitions/Tracks-Light"
       responses:
         201:
           description: "Created sucessfully"
@@ -491,7 +491,38 @@ definitions:
       user_id:
         type: "string"
         format: "uuid"
-      path:
+      cover_path:
+          type: "string"
+          format: "path"
+          example: "https://server.com/data/maCover.jpeg"
+      track_path:
+        type: "string"
+        format: "path"
+        example: "https://server.com/data/monson.mp3"
+  Tracks-Light:
+    type: "object"
+    description: "Lighter version of 'Tracks' without the ID, used during the creation of the track"
+    required:
+    - "title"
+    - "duration"
+    - "user_id"
+    - "path"
+    properties:
+      title:
+        type: "string"
+        example: "Mon son"
+      duration:
+        type: "integer"
+        format: "int64"
+        example: 180000
+      user_id:
+        type: "string"
+        format: "uuid"
+      cover_path:
+          type: "string"
+          format: "path"
+          example: "https://server.com/data/maCover.jpeg"
+      track_path:
         type: "string"
         format: "path"
         example: "https://server.com/data/monson.mp3"
